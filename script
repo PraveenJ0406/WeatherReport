@@ -1,0 +1,61 @@
+
+// let api="https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}"
+
+let form=document.querySelector("form")
+form.addEventListener("submit",(e)=>{
+    e.preventDefault()
+    let fetchData=async()=>{
+        let key="0892e7d401ed29f60b1c35bd871092a7"
+        let place=document.querySelector("#location").value
+        let data=await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=${key}`)
+        let finalOutput= await data.json()
+        console.log(finalOutput)
+        let tempValue=document.querySelector(".temp_value")
+        let humidvalue=document.querySelector(".humid_value")
+        let weathercondition=document.querySelector("#Weather_name")
+        let background=document.querySelector("body")
+        console.log(weathercondition)
+        let finalTemp=Math.round(finalOutput.main.temp-273)
+        let finalHumid=(finalOutput.main.humidity)
+        let finalWeathercondition=(finalOutput.weather[0].main).toLowerCase()
+        weathercondition.innerHTML=`${finalWeathercondition}`
+        tempValue.innerHTML=`${finalTemp}<sup>o</sup>C`
+        humidvalue.innerHTML=`${finalHumid}g/Kg`
+
+        let weatherimage=document.getElementById("img")
+        switch(finalWeathercondition){
+            case "haze":
+                weatherimage.src='/assets/hazz.jpeg'
+                background.style.backgroundImage="url(/assets/huzegif.gif)"
+                break;
+             case "clouds":
+                    weatherimage.src='/assets/cloud.jpg'
+                background.style.backgroundImage="url(/assets/BackgroundCloud.webp)"
+                break;
+            case "rain":
+                    weatherimage.src='/assets/rain.avif'
+                background.style.backgroundImage="url(/assets/raingif.gif)"
+                break;
+             case "sunny":
+                    weatherimage.src='/assets/sunny.webp'
+                background.style.backgroundImage="url(/assets/sunnygif.gif)"
+                break;
+            case "snow":
+                weatherimage.src='/assets/snow.webp'
+                background.style.backgroundImage="url(/assets/snowgif.gif)"
+                break;
+            case "dust":
+                weatherimage.src='/assets/dust.png'
+                background.style.backgroundImage="url(/assets/dustgif.gif)"
+                break;
+            case "mist":
+                weatherimage.src='/assets/hazz.jpeg'
+                background.style.backgroundImage="url(/assets/huzegif.gif)"
+                break;
+            default:
+                weatherimage.src='/assets/favconImge.png'
+                background.style.backgroundImage="url(/assets/deafaultphoto.avif)"
+        }
+    }
+    fetchData()
+})
